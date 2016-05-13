@@ -1,6 +1,8 @@
 package hs_mannheim.mmobile;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -23,10 +27,8 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "TAG";
-
-    private static final int PORT = 8080;
-    private static final String IP = "141.19.142.50";
+    private static final String TAG = "Main";
+    private TextView mTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,63 +49,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mTv = (TextView) findViewById(R.id.tv);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Runnable r = new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                callWebService();
+                Looper.prepare();
+                boolean found = false;
+                while(!found) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    String result = new StringStore().read("cas_mmobile_swipe_data");
+                    if(!result.isEmpty()) {
+                        Handler refresh = new Handler(Looper.getMainLooper());
+                        refresh.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mTv.setText("SWIPE");
+                            }
+                        });
+                        found = true;
+                        new StringStore().write("cas_mmobile_swipe_data", "");
+                    }
+                }
             }
-        };
-
-        new Thread(r).start();
-    }
-
-    public void callWebService(){
-        URL url;
-        HttpURLConnection urlConnection = null;
-
-        try {
-            url = new URL(String.format("http://%s:%d/string-store/get?key=%s", IP, PORT, "test"));
-
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            urlConnection.setRequestProperty("Accept", "*/*");
-            urlConnection.setRequestMethod("GET");
-
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            readStream(in);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(urlConnection != null) {
-                urlConnection.disconnect();
-            }
-        }
-    }
-
-    private void readStream(InputStream in) {
-        StringBuilder builder = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String line;
-        Log.d(TAG, "Reading");
-        try {
-            while((line = reader.readLine()) != null){
-                Log.d(TAG, line);
-                builder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Log.d("Test", builder.toString());
+        }).start();
     }
 
     @Override
