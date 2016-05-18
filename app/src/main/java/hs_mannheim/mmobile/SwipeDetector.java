@@ -13,6 +13,7 @@ public class SwipeDetector extends Observable<SwipeDetector.SwipeListener> {
     private static final int FREQUENCY = 1000;
 
     private final StringStore mStringStore;
+    private Thread mThread;
 
     public SwipeDetector() {
         mStringStore = new StringStore();
@@ -22,7 +23,12 @@ public class SwipeDetector extends Observable<SwipeDetector.SwipeListener> {
      * Starts polling for incoming swipes at a given frequency.
      */
     public void start() {
-        new Thread(new LooperRunnable()).start();
+        mThread = new Thread(new LooperRunnable());
+        mThread.start();
+    }
+
+    public void stop() {
+        mThread.interrupt();
     }
 
     /**
@@ -56,7 +62,7 @@ public class SwipeDetector extends Observable<SwipeDetector.SwipeListener> {
                 try {
                     Thread.sleep(FREQUENCY);
                 } catch (InterruptedException e) {
-                    Log.e(TAG, e.getMessage());
+                    e.printStackTrace();
                     abort = true;
                 }
 

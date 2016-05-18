@@ -1,8 +1,13 @@
 package hs_mannheim.mmobile;
 
+import android.util.Log;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
