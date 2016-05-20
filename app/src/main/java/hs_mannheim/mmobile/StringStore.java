@@ -28,7 +28,8 @@ public class StringStore {
             url = new URL(String.format("http://%s:%d/string-store/get?key=%s", IP, PORT, key));
 
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            urlConnection.setRequestProperty("Content-Type", "text/json");
+            urlConnection.setRequestProperty("charset", "utf-8");
             urlConnection.setRequestProperty("Accept", "*/*");
             urlConnection.setRequestMethod("GET");
             urlConnection.setInstanceFollowRedirects(false);
