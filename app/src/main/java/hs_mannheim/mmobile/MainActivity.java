@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements SwipeDetector.SwipeListener {
 
-    private SwipeDetector mSwipeDetector = new SwipeDetector();
+    private SwipeDetector mSwipeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +17,15 @@ public class MainActivity extends AppCompatActivity implements SwipeDetector.Swi
 
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build());
         setContentView(R.layout.activity_main);
+
+        mSwipeDetector = new SwipeDetector();
+        mSwipeDetector.registerObserver(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mSwipeDetector.registerObserver(this);
         mSwipeDetector.start();
     }
 
@@ -32,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements SwipeDetector.Swi
         super.onPause();
 
         mSwipeDetector.stop();
-        mSwipeDetector.unregisterObserver(this);
     }
 
     @Override
@@ -42,8 +43,7 @@ public class MainActivity extends AppCompatActivity implements SwipeDetector.Swi
 
     public void goToBeaconActivity(View view) {
         mSwipeDetector.stop();
-        mSwipeDetector.unregisterObserver(this);
 
-        startActivity(new Intent(this, ApproachActivity.class));
+        startActivity(new Intent(this, CaveActivity.class));
     }
 }

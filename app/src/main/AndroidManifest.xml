@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ApproachActivity"
+            android:name=".CaveActivity"
             android:label="@string/title_activity_approach"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
