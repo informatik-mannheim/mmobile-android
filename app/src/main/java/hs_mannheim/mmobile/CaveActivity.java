@@ -1,6 +1,9 @@
 package hs_mannheim.mmobile;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -25,7 +28,11 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
         mProximityDetector = new ProximityDetector(this, 1.5);
         mProximityDetector.registerObserver(this);
+
         checkPermissions();
+
+        PersonalProfile profile = new PersonalProfile("Horst", "Schneider", 'm', 32);
+        save(profile);
     }
 
     private void checkPermissions() {
@@ -41,7 +48,6 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     protected void onStart() {
         super.onStart();
 
-
         mProximityDetector.startScanning();
     }
 
@@ -55,5 +61,30 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     @Override
     public void onApproach() {
         Toast.makeText(this, "BEACON DETECTED", Toast.LENGTH_LONG).show();
+
+        notifyCaveServer();
+        sendProfileToStringStore();
+    }
+
+    private void notifyCaveServer() {
+
+    }
+
+    private void sendProfileToStringStore() {
+        String profile = load();
+        new StringStore().write("personal_profile", profile);
+
+    }
+
+    public void save(PersonalProfile profile) {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(getString(R.string.personal_profile), profile.toJSON());
+        editor.commit();
+    }
+
+    public String load() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        return sharedPref.getString(getString(R.string.personal_profile), "");
     }
 }

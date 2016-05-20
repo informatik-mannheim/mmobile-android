@@ -1,7 +1,11 @@
 package hs_mannheim.mmobile;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Observable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.estimote.sdk.BeaconManager;

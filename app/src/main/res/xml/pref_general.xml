@@ -1,0 +1,43 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_first_name"
+        android:inputType="textCapWords"
+        android:key="first_name"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_first_name" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_last_name"
+        android:inputType="textCapWords"
+        android:key="last_name"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_last_name" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_age"
+        android:inputType="number"
+        android:key="age"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_age"/>
+
+    <ListPreference
+        android:defaultValue="180"
+        android:entries="@array/pref_gender_titles"
+        android:entryValues="@array/pref_gender_values"
+        android:key="gender"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_gender" />
+</PreferenceScreen>
