@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Utils;
@@ -18,7 +19,7 @@ import com.estimote.sdk.eddystone.Eddystone;
 
 import java.util.List;
 
-public class ApproachActivity extends AppCompatActivity {
+public class ApproachActivity extends AppCompatActivity implements ProximityDetector.ProximityListener {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 117;
 
@@ -32,7 +33,8 @@ public class ApproachActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mProximityDetector = new ProximityDetector(this);
+        mProximityDetector = new ProximityDetector(this, 1.5);
+        mProximityDetector.registerObserver(this);
     }
 
     private void checkPermissions() {
@@ -57,5 +59,10 @@ public class ApproachActivity extends AppCompatActivity {
         super.onStop();
         
         mProximityDetector.stopScanning();
+    }
+
+    @Override
+    public void onApproach() {
+        Toast.makeText(this, "BEACON DETECTED", Toast.LENGTH_LONG).show();
     }
 }
