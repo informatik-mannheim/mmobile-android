@@ -28,12 +28,22 @@ public class MainActivity extends AppCompatActivity implements SwipeDetector.Swi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        mSwipeDetector.stop();
+        mSwipeDetector.unregisterObserver(this);
+    }
+
+    @Override
     public void onSwipeDetected() {
         Toast.makeText(this, "SWIPE!", Toast.LENGTH_LONG).show();
     }
 
     public void goToBeaconActivity(View view) {
         mSwipeDetector.stop();
+        mSwipeDetector.unregisterObserver(this);
+
         startActivity(new Intent(this, ApproachActivity.class));
     }
 }
