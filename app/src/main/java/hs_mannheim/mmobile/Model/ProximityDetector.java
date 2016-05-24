@@ -1,11 +1,7 @@
-package hs_mannheim.mmobile;
+package hs_mannheim.mmobile.Model;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Observable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.estimote.sdk.BeaconManager;
@@ -72,17 +68,26 @@ public class ProximityDetector extends Observable<ProximityDetector.ProximityLis
             Log.d(TAG, "Mean calculated: " + Double.toString(mean));
 
             if (mean < mThresholdDistance) {
-                notifyListeners();
+                notifyEntry();
+            } else {
+                notifyExit();
             }
+
+        }
+    }
+
+    private void notifyExit() {
+        for (ProximityListener listener : mObservers) {
+            listener.onExit();
         }
     }
 
     /**
      * Notify all listeners that an Eddystone has been found in range of the threshold.
      */
-    private void notifyListeners() {
+    private void notifyEntry() {
         for (ProximityListener listener : mObservers) {
-            listener.onApproach();
+            listener.onEntry();
         }
     }
 
@@ -123,6 +128,7 @@ public class ProximityDetector extends Observable<ProximityDetector.ProximityLis
     }
 
     public interface ProximityListener {
-        void onApproach();
+        void onEntry();
+        void onExit();
     }
 }

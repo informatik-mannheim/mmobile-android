@@ -6,11 +6,8 @@ import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements SwipeDetector.SwipeListener {
-
-    private SwipeDetector mSwipeDetector;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,32 +24,14 @@ public class MainActivity extends AppCompatActivity implements SwipeDetector.Swi
             }
         });
 
-        mSwipeDetector = new SwipeDetector();
-        mSwipeDetector.registerObserver(this);
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        mSwipeDetector.start();
+    public void startSwipeActivity(View view) {
+        startActivity(new Intent(this, SwipeActivity.class));
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        mSwipeDetector.stop();
-    }
-
-    @Override
-    public void onSwipeDetected() {
-        Toast.makeText(this, "SWIPE!", Toast.LENGTH_LONG).show();
-    }
-
-    public void goToBeaconActivity(View view) {
-        mSwipeDetector.stop();
-
+    public void startProfileActivity(View view) {
         startActivity(new Intent(this, CaveActivity.class));
     }
 }

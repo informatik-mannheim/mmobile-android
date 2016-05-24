@@ -1,14 +1,14 @@
-package hs_mannheim.mmobile;
+package hs_mannheim.mmobile.Model;
 
 import java.util.Locale;
 
 public class PersonalProfile {
     private String mFirstName;
     private String mLastName;
-    private char mGender;
+    private String mGender;
     private int mAge;
 
-    public PersonalProfile(String firstName, String lastName, char gender, int age) {
+    public PersonalProfile(String firstName, String lastName, String gender, int age) {
         setFirstName(firstName);
         setLastName(lastName);
         setGender(gender);
@@ -37,11 +37,11 @@ public class PersonalProfile {
         this.mLastName = mLastName;
     }
 
-    public char getGender() {
+    public String getGender() {
         return mGender;
     }
 
-    public void setGender(char mGender) {
+    public void setGender(String mGender) {
         this.mGender = mGender;
     }
 

@@ -31,7 +31,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"></activity>
+            android:label="@string/title_activity_profile" />
+        <activity
+            android:name=".SwipeActivity"
+            android:label="@string/title_activity_swipe"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="hs_mannheim.mmobile.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

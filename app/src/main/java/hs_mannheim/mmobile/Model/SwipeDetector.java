@@ -1,4 +1,4 @@
-package hs_mannheim.mmobile;
+package hs_mannheim.mmobile.Model;
 
 import android.database.Observable;
 import android.os.Handler;
