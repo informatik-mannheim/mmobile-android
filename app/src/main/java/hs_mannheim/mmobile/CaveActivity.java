@@ -76,7 +76,6 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         mProgressBar.setVisibility(View.INVISIBLE);
         mTextView.setText("Autohaus betreten, sende Profil.");
     }
-
     @Override
     public void onExit() {
         mProgressBar.setVisibility(View.VISIBLE);
@@ -84,7 +83,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     }
 
     private void notifyCaveServer() {
-
+        // TODO: implement
     }
 
     private void sendProfileToStringStore() {

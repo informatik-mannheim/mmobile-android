@@ -18,7 +18,7 @@ public class StringStore {
     private static final String TAG = "TAG";
 
     private static final int PORT = 8080;
-    private static final String IP = "141.19.142.50";
+    private static final String IP = "37.61.204.167";
 
     public String read(String key) {
         URL url;
@@ -28,10 +28,10 @@ public class StringStore {
             url = new URL(String.format("http://%s:%d/string-store/get?key=%s", IP, PORT, key));
 
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("GET");
             urlConnection.setRequestProperty("Content-Type", "text/json");
             urlConnection.setRequestProperty("charset", "utf-8");
             urlConnection.setRequestProperty("Accept", "*/*");
-            urlConnection.setRequestMethod("GET");
             urlConnection.setInstanceFollowRedirects(false);
             urlConnection.setUseCaches(false);
 
