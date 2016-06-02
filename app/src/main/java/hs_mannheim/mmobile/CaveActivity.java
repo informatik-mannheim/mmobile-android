@@ -80,6 +80,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     public void onExit() {
         mProgressBar.setVisibility(View.VISIBLE);
         mTextView.setText("Ausserhalb des Autohauses.");
+        removeProfileFromStringStore();
     }
 
     private void notifyCaveServer() {
@@ -96,6 +97,13 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
         new StringStore().write("personal_profile", profile.toJSON());
     }
+
+    private void removeProfileFromStringStore() {
+        Toast.makeText(this, "Profil entfernt", Toast.LENGTH_LONG).show();
+
+        new StringStore().write("personal_profile", "[]");
+    }
+
 
     public PersonalProfile load() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);

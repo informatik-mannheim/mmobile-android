@@ -17,7 +17,7 @@ public class PersonalProfile {
 
     public String toJSON() {
         return String.format(Locale.GERMANY,
-                "{'first_name':'%s','last_name':'%s','gender':'%s','age':'%d'}",
+                "[{\"first_name\":\"%s\",\"last_name\":\"%s\",\"gender\":\"%s\",\"age\":\"%d\"}]",
                 getFirstName(), getLastName(), getGender(), getAge());
     }
 
