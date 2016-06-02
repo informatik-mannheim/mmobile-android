@@ -229,6 +229,8 @@ public class ProfileActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("proximity_threshold"));
+            bindPreferenceSummaryToValue(findPreference("ip"));
+            bindPreferenceSummaryToValue(findPreference("port"));
         }
 
         @Override

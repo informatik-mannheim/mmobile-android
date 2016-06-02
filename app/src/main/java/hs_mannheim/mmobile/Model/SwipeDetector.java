@@ -15,8 +15,8 @@ public class SwipeDetector extends Observable<SwipeDetector.SwipeListener> {
     private final StringStore mStringStore;
     private Thread mThread;
 
-    public SwipeDetector() {
-        mStringStore = new StringStore();
+    public SwipeDetector(StringStore store) {
+        mStringStore = store;
     }
 
     /**

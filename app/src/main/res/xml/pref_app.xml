@@ -2,6 +2,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
         android:capitalize="words"
+        android:defaultValue="@string/pref_ip"
+        android:inputType="textCapCharacters"
+        android:key="ip"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_ip" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue="@string/pref_port"
+        android:inputType="number"
+        android:key="port"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_port" />
+
+    <EditTextPreference
+        android:capitalize="words"
         android:defaultValue="@string/pref_proximity_threshold"
         android:inputType="numberDecimal"
         android:key="proximity_threshold"
@@ -9,4 +29,6 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_title_proximity_threshold" />
+
+
 </PreferenceScreen>

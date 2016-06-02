@@ -29,6 +29,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     private ProximityDetector mProximityDetector;
     private ProgressBar mProgressBar;
     private TextView mTextView;
+    private StringStore mStringStore;
 
 
     @Override
@@ -38,6 +39,10 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Ein Besuch im Autohaus");
         setSupportActionBar(toolbar);
+
+        String ip = PreferenceManager.getDefaultSharedPreferences(this).getString("ip", null);
+        int port = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("port", null));
+        mStringStore = new StringStore(ip, port);
 
         float threshold = Float.parseFloat(PreferenceManager
                 .getDefaultSharedPreferences(this)
@@ -104,13 +109,13 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
                 profile.toJSON()),
                 Toast.LENGTH_LONG).show();
 
-        new StringStore().write("personal_profile", profile.toJSON());
+        mStringStore.write("personal_profile", profile.toJSON());
     }
 
     private void removeProfileFromStringStore() {
         Toast.makeText(this, "Profil entfernt", Toast.LENGTH_LONG).show();
 
-        new StringStore().write("personal_profile", "[]");
+        mStringStore.write("personal_profile", "[]");
     }
 
 

@@ -85,5 +85,9 @@
     <string name="pref_title_proximity_threshold">Proximity Threshold</string>
     <string name="title_activity_swipe">SwipeActivity</string>
     <string name="pref_header_app">App-Einstellungen</string>
+    <string name="pref_ip">127.0.0.1</string>
+    <string name="pref_title_ip">IP Rest Server</string>
+    <string name="pref_port">8080</string>
+    <string name="pref_title_port">Port</string>
 
 </resources>

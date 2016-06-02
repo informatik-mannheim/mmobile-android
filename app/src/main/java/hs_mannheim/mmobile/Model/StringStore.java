@@ -8,24 +8,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 public class StringStore {
 
     private static final String TAG = "TAG";
 
-    private static final int PORT = 8080;
-    private static final String IP = "37.61.204.167";
+    private final String mIp;
+    private final int mPort;
+
+    public StringStore(String IP, int port) {
+        mIp = IP;
+        mPort = port;
+    }
 
     public String read(String key) {
         URL url;
         HttpURLConnection urlConnection = null;
 
         try {
-            url = new URL(String.format("http://%s:%d/string-store/get?key=%s", IP, PORT, key));
+            url = new URL(String.format(Locale.GERMANY, "http://%s:%d/string-store/get?key=%s", mIp, mPort, key));
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
@@ -39,13 +43,8 @@ public class StringStore {
             String result = readStream(in);
             in.close();
             return result;
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -59,7 +58,7 @@ public class StringStore {
         HttpURLConnection urlConnection = null;
 
         try {
-            url = new URL(String.format("http://%s:%d/string-store/set", IP, PORT));
+            url = new URL(String.format(Locale.GERMANY, "http://%s:%d/string-store/set", mIp, mPort));
             String data = String.format("key=%s&value=%s", key, value);
             byte[] postData = data.getBytes(StandardCharsets.UTF_8);
             int postDataLength = postData.length;
@@ -78,11 +77,6 @@ public class StringStore {
 
             urlConnection.getOutputStream().write(postData);
             urlConnection.getInputStream();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
