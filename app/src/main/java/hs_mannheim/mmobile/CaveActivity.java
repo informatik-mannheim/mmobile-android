@@ -1,9 +1,7 @@
 package hs_mannheim.mmobile;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,9 +15,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 import hs_mannheim.mmobile.Model.PersonalProfile;
 import hs_mannheim.mmobile.Model.ProximityDetector;
-import hs_mannheim.mmobile.Model.Settings;
 import hs_mannheim.mmobile.Model.StringStore;
 
 public class CaveActivity extends AppCompatActivity implements ProximityDetector.ProximityListener {
@@ -40,7 +39,11 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         toolbar.setTitle("Ein Besuch im Autohaus");
         setSupportActionBar(toolbar);
 
-        float threshold = new Settings(this).getFloat("proximity-threshold", 3.0f);
+        float threshold = Float.parseFloat(PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getString("proximity_threshold", "3.0"));
+
+        Log.d(TAG, String.format(Locale.GERMANY, "Threshold is %.2f", threshold));
 
         mProximityDetector = new ProximityDetector(this, threshold);
         mProximityDetector.registerObserver(this);

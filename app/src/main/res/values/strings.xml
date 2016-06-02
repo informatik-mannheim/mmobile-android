@@ -77,8 +77,13 @@
     <string name="pref_first_name">John</string>
     <string name="pref_last_name">Doe</string>
     <string name="pref_age">29</string>
+
+    <string name="pref_proximity_threshold">1.2</string>
     <string name="pref_title_first_name">Vorname</string>
     <string name="pref_title_last_name">Nachname</string>
     <string name="pref_title_age">Alter</string>
+    <string name="pref_title_proximity_threshold">Proximity Threshold</string>
     <string name="title_activity_swipe">SwipeActivity</string>
+    <string name="pref_header_app">App-Einstellungen</string>
+
 </resources>

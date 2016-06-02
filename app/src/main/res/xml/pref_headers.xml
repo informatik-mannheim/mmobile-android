@@ -1,6 +1,11 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
     <header
         android:fragment="hs_mannheim.mmobile.ProfileActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
+        android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/pref_header_general" />
+
+    <header
+        android:fragment="hs_mannheim.mmobile.ProfileActivity$AppPreferenceFragment"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/pref_header_app" />
 </preference-headers>
