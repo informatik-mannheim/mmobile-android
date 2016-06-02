@@ -3,6 +3,7 @@ package hs_mannheim.mmobile;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -10,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -17,11 +19,13 @@ import android.widget.Toast;
 
 import hs_mannheim.mmobile.Model.PersonalProfile;
 import hs_mannheim.mmobile.Model.ProximityDetector;
+import hs_mannheim.mmobile.Model.Settings;
 import hs_mannheim.mmobile.Model.StringStore;
 
 public class CaveActivity extends AppCompatActivity implements ProximityDetector.ProximityListener {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 117;
+    private static final String TAG = "[CaveActivity]";
 
     private ProximityDetector mProximityDetector;
     private ProgressBar mProgressBar;
@@ -36,7 +40,9 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         toolbar.setTitle("Ein Besuch im Autohaus");
         setSupportActionBar(toolbar);
 
-        mProximityDetector = new ProximityDetector(this, 1.2);
+        float threshold = new Settings(this).getFloat("proximity-threshold", 3.0f);
+
+        mProximityDetector = new ProximityDetector(this, threshold);
         mProximityDetector.registerObserver(this);
 
         checkPermissions();
