@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import hs_mannheim.mmobile.Model.KVEServer;
 import hs_mannheim.mmobile.Model.PersonalProfile;
 import hs_mannheim.mmobile.Model.ProximityDetector;
 import hs_mannheim.mmobile.Model.StringStore;
+import hs_mannheim.mmobile.Model.UDPClient;
 
 public class CaveActivity extends AppCompatActivity implements ProximityDetector.ProximityListener {
 
@@ -30,6 +32,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     private ProgressBar mProgressBar;
     private TextView mTextView;
     private StringStore mStringStore;
+    private KVEServer mKVEServer;
 
 
     @Override
@@ -43,6 +46,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         String ip = PreferenceManager.getDefaultSharedPreferences(this).getString("ip", null);
         int port = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("port", null));
         mStringStore = new StringStore(ip, port);
+        mKVEServer = new KVEServer();
 
         float threshold = Float.parseFloat(PreferenceManager
                 .getDefaultSharedPreferences(this)
@@ -84,7 +88,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
     @Override
     public void onEntry() {
-        notifyCaveServer();
+        notifyCaveServerEntry();
         sendProfileToStringStore();
 
         mProgressBar.setVisibility(View.INVISIBLE);
@@ -94,11 +98,17 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     public void onExit() {
         mProgressBar.setVisibility(View.VISIBLE);
         mTextView.setText("Ausserhalb des Autohauses.");
+
         removeProfileFromStringStore();
+        notifyCaveServerExit();
     }
 
-    private void notifyCaveServer() {
-        // TODO: implement
+    private void notifyCaveServerEntry() {
+        mKVEServer.send(true, "blue");
+    }
+
+    private void notifyCaveServerExit() {
+        mKVEServer.send(false, "blue");
     }
 
     private void sendProfileToStringStore() {
