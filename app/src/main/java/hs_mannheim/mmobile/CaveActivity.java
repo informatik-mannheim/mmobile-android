@@ -1,10 +1,16 @@
 package hs_mannheim.mmobile;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -58,9 +64,40 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         mProximityDetector.registerObserver(this);
 
         checkPermissions();
+        checkGPSStatus();
 
         mTextView = (TextView) findViewById(R.id.tv_beacon);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+    }
+
+    private void checkGPSStatus() {
+        LocationManager locationManager = null;
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+        if ( locationManager == null ) {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        }
+        try {
+            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex){}
+        try {
+            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex){}
+        if ( !gps_enabled && !network_enabled ){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(CaveActivity.this);
+            dialog.setMessage("GPS not enabled");
+            dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //this will navigate user to the device location settings screen
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent);
+                }
+            });
+            AlertDialog alert = dialog.create();
+            alert.show();
+        }
     }
 
     private void checkPermissions() {
@@ -68,6 +105,12 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
