@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +38,10 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     private ProximityDetector mProximityDetector;
     private ProgressBar mProgressBar;
     private TextView mTextView;
+    private RadioButton mRadioBlue;
+
     private StringStore mStringStore;
     private KVEServer mKVEServer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
         mTextView = (TextView) findViewById(R.id.tv_beacon);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        mRadioBlue = (RadioButton) findViewById(R.id.rbBlue);
     }
 
     private void checkGPSStatus() {
@@ -146,12 +149,16 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         notifyCaveServerExit();
     }
 
+    private String getColor() {
+        return mRadioBlue.isChecked() ? "blue" : "green";
+    }
+
     private void notifyCaveServerEntry() {
-        mKVEServer.send(true, "blue");
+        mKVEServer.send(true, getColor());
     }
 
     private void notifyCaveServerExit() {
-        mKVEServer.send(false, "blue");
+        mKVEServer.send(false, getColor());
     }
 
     private void sendProfileToStringStore() {
