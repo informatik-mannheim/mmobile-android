@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ import hs_mannheim.mmobile.Model.ProximityDetector;
 import hs_mannheim.mmobile.Model.StringStore;
 import hs_mannheim.mmobile.Model.UDPClient;
 
-public class CaveActivity extends AppCompatActivity implements ProximityDetector.ProximityListener {
+public class CaveActivity extends AppCompatActivity implements ProximityDetector.ProximityListener, RadioGroup.OnCheckedChangeListener {
 
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 117;
     private static final String TAG = "[CaveActivity]";
@@ -42,6 +43,8 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
     private StringStore mStringStore;
     private KVEServer mKVEServer;
+    private boolean mInsideCave;
+    private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,11 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         mTextView = (TextView) findViewById(R.id.tv_beacon);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mRadioBlue = (RadioButton) findViewById(R.id.rbBlue);
+        mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+
+        mRadioGroup.setOnCheckedChangeListener(this);
+
+        mInsideCave = false;
     }
 
     private void checkGPSStatus() {
@@ -134,6 +142,8 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
 
     @Override
     public void onEntry() {
+        mInsideCave = true;
+
         notifyCaveServerEntry();
         sendProfileToStringStore();
 
@@ -142,6 +152,8 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
     }
     @Override
     public void onExit() {
+        mInsideCave = false;
+
         mProgressBar.setVisibility(View.VISIBLE);
         mTextView.setText("Ausserhalb des Autohauses.");
 
@@ -165,15 +177,15 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         PersonalProfile profile = load();
 
         Toast.makeText(this,
-                String.format("Profil gepeichert \n\n(%s).",
-                profile.toJSON()),
-                Toast.LENGTH_LONG).show();
+                String.format("Profil gepeichert \n\n(%s).\n\nCave betreten.",
+                profile.toJSON(getColor())),
+                Toast.LENGTH_SHORT).show();
 
-        mStringStore.write("personal_profile", profile.toJSON());
+        mStringStore.write("personal_profile", profile.toJSON(getColor()));
     }
 
     private void removeProfileFromStringStore() {
-        Toast.makeText(this, "Profil entfernt", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Profil entfernt. \n\nCave verlassen.", Toast.LENGTH_SHORT).show();
 
         mStringStore.write("personal_profile", "[]");
     }
@@ -188,5 +200,17 @@ public class CaveActivity extends AppCompatActivity implements ProximityDetector
         int age = Integer.parseInt(sharedPrefs.getString("age", "-1"));
 
         return new PersonalProfile(firstName, lastName, gender, age);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        Toast.makeText(this, getColor(), Toast.LENGTH_SHORT).show();
+
+        if(mInsideCave) {
+            notifyCaveServerEntry();
+        } else {
+            notifyCaveServerExit();
+        }
+
     }
 }

@@ -15,10 +15,15 @@ public class PersonalProfile {
         setAge(age);
     }
 
-    public String toJSON() {
+    /**
+     * Sends profile data alongside the current configuration (green = 1, blue = 2)
+     * @param color
+     * @return
+     */
+    public String toJSON(String color) {
         return String.format(Locale.GERMANY,
-                "[{\"first_name\":\"%s\",\"last_name\":\"%s\",\"gender\":\"%s\",\"age\":\"%d\"}]",
-                getFirstName(), getLastName(), getGender(), getAge());
+                "[{\"first_name\":\"%s\",\"last_name\":\"%s\",\"gender\":\"%s\",\"age\":\"%d\",\"config\":\"%d\"}]",
+                getFirstName(), getLastName(), getGender(), getAge(), color.equals("green") ? 1 : 2);
     }
 
     public String getFirstName() {
