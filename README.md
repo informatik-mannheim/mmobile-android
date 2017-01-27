@@ -1,2 +1,2 @@
 # mmobile-android
-Prototype to be integrate in MMobile for Android
+Prototype to be integrated MMobile for Android
